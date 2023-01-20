@@ -40,12 +40,12 @@ export default function Game(props: GameProps) {
     useEffect(() => {
         if(firstRender) {
             let newIndex = 0;
-            while(getCookie(newIndex.toString()) != undefined) {
+            while(getCookie("g" + newIndex.toString()) != undefined) {
                 newIndex++;
             }
             let newGuesses = guesses.map((x) => x);
             for(let i = 0; i < newIndex; i++) {
-                const cookie = getCookie(i.toString())!;
+                const cookie = getCookie("g" + i.toString())!;
                 newGuesses[i] = cookie;
                 if(cookie.toLowerCase() == props.solution.toLowerCase()) {
                     setWon(true);
@@ -74,7 +74,7 @@ export default function Game(props: GameProps) {
         const newGuesses = guesses.map((val) => val);
         newGuesses[step] = val
         setGuesses(newGuesses);
-        setCookie(step.toString(), val);
+        setCookie("g" + step.toString(), val);
         if(val.toLowerCase() == props.solution.toLowerCase())
             setWon(true);
         setStep(step + 1);
