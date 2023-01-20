@@ -391,7 +391,7 @@ export default function Home() {
                 <title>Quotle!</title>
                 <meta name="description" content="The book quote guessing game" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.png" />
+                <link rel="icon" href="favicon.png" />
             </Head>
             <main className={styles.main}>
                 <Game hints={hints} solution={solution} allBooks={allTitles}/>
