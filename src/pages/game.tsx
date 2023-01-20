@@ -30,6 +30,11 @@ export default function Game(props: GameProps) {
         return undefined;
     };
 
+    const [firstRender, setFistRender] = useState(true);
+    const [step, setStep] = useState(0);
+    const guesses = new Array(5).fill(0).map((_) => useState(""));
+    const [won, setWon] = useState(false);
+    const input = useRef<HTMLInputElement>(null);
     
 
     useEffect(() => {
@@ -49,13 +54,8 @@ export default function Game(props: GameProps) {
 
             setFistRender(false);
         }
-    });
+    }, [firstRender, guesses, props.solution]);
 
-    const [firstRender, setFistRender] = useState(true);
-    const [step, setStep] = useState(0);
-    const guesses = new Array(5).fill(0).map((_) => useState(""));
-    const [won, setWon] = useState(false);
-    const input = useRef<HTMLInputElement>(null);
 
     const setCookie = (name: string, value: string) => {
         const d = new Date();
