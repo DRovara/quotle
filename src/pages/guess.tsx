@@ -13,7 +13,7 @@ type GuessProps = {
 
 export default function Guess(props: GuessProps) {
     const text = props.text != "" ? props.text : "SKIPPED";
-    const correct = props.solution.toLowerCase() == props.text.toLowerCase();
+    const correct = props.solution?.toLowerCase() == props.text?.toLowerCase();
     return (
         <div className={props.current > props.order ? styles.guessVisible : styles.guessHidden} style={{"order": props.order}}>
             <div className={correct ? styles.boxCorrect : styles.boxIncorrect}></div>{text}

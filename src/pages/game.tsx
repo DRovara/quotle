@@ -32,7 +32,7 @@ export default function Game(props: GameProps) {
 
     const [firstRender, setFistRender] = useState(true);
     const [step, setStep] = useState(0);
-    const guesses = new Array(5).fill(0).map((_) => useState(""));
+    const [guesses, setGuesses] = useState(["", "", "", "", ""])
     const [won, setWon] = useState(false);
     const input = useRef<HTMLInputElement>(null);
     
@@ -43,13 +43,15 @@ export default function Game(props: GameProps) {
             while(getCookie(newIndex.toString()) != undefined) {
                 newIndex++;
             }
+            let newGuesses = guesses.map((x) => x);
             for(let i = 0; i < newIndex; i++) {
                 const cookie = getCookie(i.toString())!;
-                guesses[i][1](cookie);
+                newGuesses[i] = cookie;
                 if(cookie.toLowerCase() == props.solution.toLowerCase()) {
                     setWon(true);
                 }
             }
+            setGuesses(newGuesses);
             setStep(newIndex);
 
             setFistRender(false);
@@ -69,7 +71,9 @@ export default function Game(props: GameProps) {
             return;
         const val = input.current!.value;
         input.current!.value = "";
-        guesses[step][1](val);
+        const newGuesses = guesses.map((val) => val);
+        newGuesses[step] = val
+        setGuesses(newGuesses);
         setCookie(step.toString(), val);
         if(val.toLowerCase() == props.solution.toLowerCase())
             setWon(true);
@@ -80,18 +84,18 @@ export default function Game(props: GameProps) {
         <div className={styles.container}>
             <div className={styles.contents}>
                 <div className={styles.quoteList}>
-                    <Quote text={props.hints[0]} order={0} current={step}/>
-                    <Quote text={props.hints[1]} order={1} current={step}/>
-                    <Quote text={props.hints[2]} order={2} current={step}/>
-                    <Quote text={props.hints[3]} order={3} current={step}/>
-                    <Quote text={props.hints[4]} order={4} current={step}/>
+                    <Quote text={props.hints != undefined ? props.hints[0] : ""} order={0} current={step}/>
+                    <Quote text={props.hints != undefined ? props.hints[1] : ""} order={1} current={step}/>
+                    <Quote text={props.hints != undefined ? props.hints[2] : ""} order={2} current={step}/>
+                    <Quote text={props.hints != undefined ? props.hints[3] : ""} order={3} current={step}/>
+                    <Quote text={props.hints != undefined ? props.hints[4] : ""} order={4} current={step}/>
                 </div>
 
                 <div className={styles.inputArea}>
                     <input type="text" ref={input} placeholder="Enter a book title!" list="allbooks"/>
                     <datalist id="allbooks">
                     {
-                        props.allBooks.map((name, i) => (
+                        props.allBooks?.map((name, i) => (
                                 <option value={name} key={i}>{name}</option>
                         ))
                     }
@@ -100,11 +104,11 @@ export default function Game(props: GameProps) {
                 </div>
 
                 <div className={styles.guessList}>
-                    <Guess text={guesses[0][0]} order={0} current={step} solution={props.solution}/>
-                    <Guess text={guesses[1][0]} order={1} current={step} solution={props.solution}/>
-                    <Guess text={guesses[2][0]} order={2} current={step} solution={props.solution}/>
-                    <Guess text={guesses[3][0]} order={3} current={step} solution={props.solution}/>
-                    <Guess text={guesses[4][0]} order={4} current={step} solution={props.solution}/>
+                    <Guess text={guesses[0]} order={0} current={step} solution={props.solution}/>
+                    <Guess text={guesses[1]} order={1} current={step} solution={props.solution}/>
+                    <Guess text={guesses[2]} order={2} current={step} solution={props.solution}/>
+                    <Guess text={guesses[3]} order={3} current={step} solution={props.solution}/>
+                    <Guess text={guesses[4]} order={4} current={step} solution={props.solution}/>
                 </div>
                 <span className={styles.endInfo}>{(5 - step) + " guess" + (step != 4 ? "es " : " ") + "remaining!"}</span>
             </div>
